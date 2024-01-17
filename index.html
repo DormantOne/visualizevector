@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Cube with Multiple Interactive Dots</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        .slider-group {
+            margin-bottom: 10px;
+        }
+
+        #cube-container {
+            perspective: 800px;
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        #cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: rotate 5s infinite linear;
+        }
+
+        .side {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .front  { transform: rotateY(0deg) translateZ(100px); }
+        .back   { transform: rotateY(180deg) translateZ(100px); }
+        .left   { transform: rotateY(-90deg) translateZ(100px); }
+        .right  { transform: rotateY(90deg) translateZ(100px); }
+        .top    { transform: rotateX(90deg) translateZ(100px); }
+        .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+        .dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+        }
+
+        @keyframes rotate {
+            from { transform: rotateX(0deg) rotateY(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="slider-group">
+            <label for="x1">Red Dot X:</label>
+            <input type="range" id="x1" min="0" max="200" value="75">
+            <label for="y1">Y:</label>
+            <input type="range" id="y1" min="0" max="200" value="110">
+            <label for="z1">Z:</label>
+            <input type="range" id="z1" min="-100" max="100" value="30">
+        </div>
+        <div class="slider-group">
+            <label for="x2">Green Dot X:</label>
+            <input type="range" id="x2" min="0" max="200" value="180">
+            <label for="y2">Y:</label>
+            <input type="range" id="y2" min="0" max="200" value="50">
+            <label for="z2">Z:</label>
+            <input type="range" id="z2" min="-100" max="100" value="20">
+        </div>
+        <div class="slider-group">
+            <label for="x3">Blue Dot X:</label>
+            <input type="range" id="x3" min="0" max="200" value="129">
+            <label for="y3">Y:</label>
+            <input type="range" id="y3" min="0" max="200" value="56">
+            <label for="z3">Z:</label>
+            <input type="range" id="z3" min="-100" max="100" value="90">
+        </div>
+        <button id="toggle-tumble">Toggle Tumble</button>
+    </div>
+
+    <div id="cube-container">
+        <div id="cube">
+            <div class="dot" id="dot1" style="background-color: red;"></div>
+            <div class="dot" id="dot2" style="background-color: green;"></div>
+            <div class="dot" id="dot3" style="background-color: blue;"></div>
+            <div class="side front"></div>
+            <div class="side back"></div>
+            <div class="side left"></div>
+            <div class="side right"></div>
+            <div class="side top"></div>
+            <div class="side bottom"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateDotPosition(dotId, xId, yId, zId) {
+            var dot = document.getElementById(dotId);
+            var x = document.getElementById(xId).value;
+            var y = document.getElementById(yId).value;
+            var z = document.getElementById(zId).value;
+            dot.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px)`;
+        }
+
+        document.getElementById('x1').addEventListener('input', function() { updateDotPosition('dot1', 'x1', 'y1', 'z1'); });
+        document.getElementById('y1').addEventListener('input', function() { updateDotPosition('dot1', 'x1', 'y1', 'z1'); });
+        document.getElementById('z1').addEventListener('input', function() { updateDotPosition('dot1', 'x1', 'y1', 'z1'); });
+
+        document.getElementById('x2').addEventListener('input', function() { updateDotPosition('dot2', 'x2', 'y2', 'z2'); });
+        document.getElementById('y2').addEventListener('input', function() { updateDotPosition('dot2', 'x2', 'y2', 'z2'); });
+        document.getElementById('z2').addEventListener('input', function() { updateDotPosition('dot2', 'x2', 'y2', 'z2'); });
+
+        document.getElementById('x3').addEventListener('input', function() { updateDotPosition('dot3', 'x3', 'y3', 'z3'); });
+        document.getElementById('y3').addEventListener('input', function() { updateDotPosition('dot3', 'x3', 'y3', 'z3'); });
+        document.getElementById('z3').addEventListener('input', function() { updateDotPosition('dot3', 'x3', 'y3', 'z3'); });
+
+        var isTumbling = true;
+        var cube = document.getElementById('cube');
+        document.getElementById('toggle-tumble').addEventListener('click', function() {
+            isTumbling = !isTumbling;
+            cube.style.animationPlayState = isTumbling ? 'running' : 'paused';
+        });
+
+        // Initialize the dot positions
+        updateDotPosition('dot1', 'x1', 'y1', 'z1');
+        updateDotPosition('dot2', 'x2', 'y2', 'z2');
+        updateDotPosition('dot3', 'x3', 'y3', 'z3');
+    </script>
+</body>
+</html>
